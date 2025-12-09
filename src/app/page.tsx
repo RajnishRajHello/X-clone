@@ -1,65 +1,105 @@
-import Image from "next/image";
+import React from "react";
+import { FaXTwitter } from "react-icons/fa6";
+import { RiHome5Line } from "react-icons/ri";
+import { CiHashtag } from "react-icons/ci";
+import { IoNotificationsOutline } from "react-icons/io5";
+import { SlEnvolopeLetter } from "react-icons/sl";
+import { CiBookmark } from "react-icons/ci";
+import { RxAvatar } from "react-icons/rx";
+import FeedCard from "@/component/feedCard";
+import { FaRegMoneyBillAlt } from "react-icons/fa";
+import { SlOptions } from "react-icons/sl";
+
+interface TwitterSideBarButton {
+  title: string;
+  icon: React.ReactNode;
+}
+
+const sideBarMenueItems: TwitterSideBarButton[] = [
+  {
+    title: "Home",
+    icon: <RiHome5Line />,
+  },
+  {
+    title: "Explore",
+    icon: <CiHashtag />,
+  },
+  {
+    title: "Notifications",
+    icon: <IoNotificationsOutline />,
+  },
+  {
+    title: "Messages",
+    icon: <SlEnvolopeLetter />,
+  },
+
+  {
+    title: "Bookmark",
+    icon: <CiBookmark />,
+  },
+  {
+    title: "Twitter Blue",
+    icon: <FaRegMoneyBillAlt />,
+  },
+  {
+    title: "Profile",
+    icon: <RxAvatar />,
+  },
+  {
+    title: "Options",
+    icon: <SlOptions />,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="    ">
+      {/* can add px-50 on full screen */}
+      <div className="grid grid-cols-12 w-screen h-screen px-60 overflow-x-hidden ">
+        <div className="col-span-1 h-screen fixed ">
+          <div className="text-4xl h-fit w-fit hover:bg-slate-600 p-2 cursor-pointer transition-all">
+            <FaXTwitter />
+          </div>
+          <div className="pr-4">
+            <ul>
+              {sideBarMenueItems.map((item) => (
+                <li
+                  className="flex justify-start items-center gap-4 m-3 text-2xl hover:bg-slate-600 w-fit px-2 py-1 cursor-pointer transition-all rounded-full"
+                  key={item.title}
+                >
+                  <span>{item.icon}</span>
+                  <span>{item.title}</span>
+                </li>
+              ))}
+            </ul>
+            <button className="bg-blue-700 px-4 py-1 w-full rounded-full">
+              Tweet
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="col-span-9 border-r-[0.2px] border-l-[0.2px] ml-55  border-gray-500  ">
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
+          <FeedCard />
         </div>
-      </main>
+        <div className="col-span-2"></div>
+      </div>
     </div>
   );
 }
