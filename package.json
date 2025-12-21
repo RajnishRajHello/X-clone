@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "generate": "graphql-codegen",
-    "dev": "concurrently \"yarn run codegen\" next dev",
+    "dev": "concurrently \"yarn run graphql-codegen\" next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

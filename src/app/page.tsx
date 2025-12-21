@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { FaXTwitter } from "react-icons/fa6";
 import { RiHome5Line } from "react-icons/ri";
 import { CiHashtag, CiBookmark } from "react-icons/ci";
@@ -7,6 +7,9 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { SlEnvolopeLetter, SlOptions } from "react-icons/sl";
 import { RxAvatar } from "react-icons/rx";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
+import { GiHummingbird } from "react-icons/gi";
+import { PiImageSquare } from "react-icons/pi";
+
 import FeedCard from "@/component/feedCard";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
@@ -15,6 +18,8 @@ import { verifyUserGoogleTokenQuery } from "../../graphql/query/user";
 import { useCurrentUser } from "../../hooks/user";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
+import { useCreateTweet, useGetAllTweets } from "../../hooks/tweet";
+import { Tweet } from "../../gql/graphql";
 
 interface TwitterSideBarButton {
   title: string;
@@ -59,9 +64,25 @@ const sideBarMenueItems: TwitterSideBarButton[] = [
 
 export default function Home() {
   const { user } = useCurrentUser();
+  const { tweets = [] } = useGetAllTweets();
+  const { mutate } = useCreateTweet();
+
   const queryClint = useQueryClient();
 
-  // console.log(user);
+  const [content, setContent] = useState("");
+
+  const handleSelectImage = useCallback(() => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+  }, []);
+
+  const handleCreateTweet = useCallback(() => {
+    mutate({
+      content,
+    });
+  }, [content, mutate]);
 
   const handleLoginWithGoolge = useCallback(
     async (cred: CredentialResponse) => {
@@ -107,7 +128,8 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <button className="bg-blue-700 px-4 py-1 w-full rounded-full">
+            <button className="bg-blue-700   w-full rounded-full flex justify-start items-center gap-4 mr-5 text-2xl hover:bg-blue-600 px-2 py-1 cursor-pointer transition-all">
+              <GiHummingbird />
               Tweet
             </button>
           </div>
@@ -127,30 +149,50 @@ export default function Home() {
                   {user.firstName} {user.lastName}
                 </h3>
               </div>
-              
             </div>
           )}
         </div>
-        <div className="col-span-9 border-r-[0.2px] border-l-[0.2px] ml-55  border-gray-500  ">
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
+        <div className="col-span-9 border-r-[0.2px] border-l-[0.2px] ml-55  border-gray-500">
+          <div className="border-b border-gray-700 pt-4 pr-4 pb-2 pl-4  hover:bg-slate-800 cursor-pointer transition-all">
+            <div className="grid grid-cols-12">
+              <div className="col-span-1">
+                {user?.profileImageURL && (
+                  <Image
+                    src={user?.profileImageURL}
+                    alt="user-image"
+                    height={50}
+                    width={50}
+                    className="rounded-full pr-2"
+                  />
+                )}
+              </div>
+              <div className="col-span-11">
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  className="w-full bg-transparent text-xl px-3 border-b border-slate-600 outline-none"
+                  placeholder="Whats happening?"
+                  rows={3}
+                ></textarea>
+                <div className=" flex justify-between items-center">
+                  <PiImageSquare
+                    onClick={handleSelectImage}
+                    className="text-xl"
+                  />
+                  <button
+                    onClick={handleCreateTweet}
+                    className="bg-blue-700    rounded-full flex justify-start items-center gap-1 mr-5 text-sm  hover:bg-blue-600 px-2 py-1 cursor-pointer transition-all"
+                  >
+                    <GiHummingbird />
+                    Tweet
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {tweets?.map((tweet) =>
+            tweet ? <FeedCard key={tweet?.id} data={tweet as Tweet} /> : null
+          )}
         </div>
         <div className="w-80 col-span-2">
           {!user && (
